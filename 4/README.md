@@ -12,25 +12,26 @@ This program, `process-run.py`, allows you to see how process states change as p
 
 2. Now run with these flags: `./process-run.py -l 4:100,1:0`.These flags specify one process with 4 instructions (all to use the CPU), and one that simply issues an I/O and waits for it to be done.How long does it take to complete both processes? Use `-c` and `-p` to find out if you were right.
 
-    4(process 0) + 5(process 1 IO) + 1 = 10
+    4(process 0) + 1(process 1 Run:IO ) + 5(process 1 IO) + 1(process 1 IO_Done) = 11
 
     ```
     $ ./process-run.py -l 4:100,1:0 -c -p
-    Time     PID: 0     PID: 1        CPU        IOs 
-    1       RUN:cpu      READY          1            
-    2       RUN:cpu      READY          1            
-    3       RUN:cpu      READY          1            
-    4       RUN:cpu      READY          1            
-    5          DONE     RUN:io          1            
-    6          DONE    WAITING                     1 
-    7          DONE    WAITING                     1 
-    8          DONE    WAITING                     1 
-    9          DONE    WAITING                     1 
-    10*        DONE       DONE                       
+    Time        PID: 0        PID: 1           CPU           IOs
+      1        RUN:cpu         READY             1          
+      2        RUN:cpu         READY             1          
+      3        RUN:cpu         READY             1          
+      4        RUN:cpu         READY             1          
+      5           DONE        RUN:io             1          
+      6           DONE       BLOCKED                           1
+      7           DONE       BLOCKED                           1
+      8           DONE       BLOCKED                           1
+      9           DONE       BLOCKED                           1
+     10           DONE       BLOCKED                           1
+     11*          DONE   RUN:io_done             1          
 
-    Stats: Total Time 10
-    Stats: CPU Busy 5 (50.00%)
-    Stats: IO Busy  4 (40.00%)
+    Stats: Total Time 11
+    Stats: CPU Busy 6 (54.55%)
+    Stats: IO Busy  5 (45.45%)
     ```
 
 3. Switch the order of the processes: `-l 1:0,4:100`. What happens now? Does switching the order matter? Why? (As always, use `-c` and `-p` to see if you were right)
