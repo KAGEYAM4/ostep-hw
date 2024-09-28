@@ -39,17 +39,18 @@ This program, `process-run.py`, allows you to see how process states change as p
 
     ```
     $ ./process-run.py -l 1:0,4:100  -c -p
-    Time     PID: 0     PID: 1        CPU        IOs 
-    1        RUN:io      READY          1            
-    2       WAITING    RUN:cpu          1          1 
-    3       WAITING    RUN:cpu          1          1 
-    4       WAITING    RUN:cpu          1          1 
-    5       WAITING    RUN:cpu          1          1 
-    6*         DONE       DONE                       
+    Time        PID: 0        PID: 1           CPU           IOs
+      1         RUN:io         READY             1          
+      2        BLOCKED       RUN:cpu             1             1
+      3        BLOCKED       RUN:cpu             1             1
+      4        BLOCKED       RUN:cpu             1             1
+      5        BLOCKED       RUN:cpu             1             1
+      6        BLOCKED          DONE                           1
+      7*   RUN:io_done          DONE             1          
 
-    Stats: Total Time 6
-    Stats: CPU Busy 5 (83.33%)
-    Stats: IO Busy  4 (66.67%)
+    Stats: Total Time 7
+    Stats: CPU Busy 6 (85.71%)
+    Stats: IO Busy  5 (71.43%)
     ```
 
 4. We’ll now explore some of the other flags. One important flag is `-S`, which determines how the system reacts when a process issues an I/O. With the flag set to `SWITCH_ON_END`, the systemwill NOT switch to another process while one is doing I/O, instead waiting until the process is completely finished. What happens when you run the following two processes (`-l 1:0,4:100 -c -S SWITCH_ON_END`), one doing I/O and the other doing CPU work?
